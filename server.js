@@ -14,9 +14,12 @@ app.post("/meals", function (req, res) {
   res.status(201).json({"status": "ok"});
 });
 
-app.get("/", function (req, res) {
-  items.get()
-})
+app.get("/meals", function (req, res) {
+  items.get(function(result) {
+    res.status(200).json(result)
+  })
+});
+
 
 app.listen(3000, function () {
   console.log("Listening on port 3000...")

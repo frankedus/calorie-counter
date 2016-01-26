@@ -17,7 +17,13 @@ function addItem(attributes) {
   });
 }
 
-function getItem()
+function getItem(callback) {
+  connection.query('SELECT * FROM meals', function(err, result) {
+    if (err) throw err;
+    callback(result);
+  });
+}
+
 
 module.exports = {
   add: addItem,
