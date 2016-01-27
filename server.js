@@ -10,8 +10,9 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 
 app.post("/meals", function (req, res) {
-  items.add(req.body);
-  res.status(201).json({"status": "ok"});
+  items.add(req.body, function(result) {
+  res.status(201).json({status: 'ok'})
+  })
 });
 
 app.get("/meals", function (req, res) {
@@ -20,6 +21,15 @@ app.get("/meals", function (req, res) {
   })
 });
 
+app.delete("/meals/:id", function (req, res) {
+  items.del(req.params.id, function(err, result) {
+    if (err) {
+      res.json({status: 'not exists'});
+    } else {
+      res.json({status: 'ok'});
+    }
+  });
+})
 
 app.listen(3000, function () {
   console.log("Listening on port 3000...")
