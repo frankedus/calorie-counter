@@ -2,13 +2,15 @@
 
 var url = "http://localhost:3000/meals";
 var addButton = document.querySelector('.add-button');
+var filterButton = document.querySelector('.filter-button');
 var mealInput = document.querySelector('.meal-input');
+var filterInput = document.querySelector('.filter-input');
 var calorieInput = document.querySelector('.calorie-input');
 var dateInput = document.querySelector('.date-input');
 var mealsContainer = document.querySelector('.main-container')
 
 
-function getMeals(callback) {
+function getMeals(url, callback) {
   var req = new XMLHttpRequest();
   req.open('GET', url);
   req.send();
@@ -23,14 +25,14 @@ function getMeals(callback) {
 function listMeals(response) {
   mealsContainer.innerHTML = ' ';
   response.forEach(function(meal) {
-    var meals = document.createElement('p');
+    var meals = document.createElement('div');
     meals.innerText = meal.name + ' ' + meal.calories + ' ' + meal.date;
     meals.setAttribute('id', meal.meal_id);
     mealsContainer.appendChild(meals);
   });
 }
 
-getMeals(listMeals);
+getMeals(url, listMeals);
 
 function postMeals(callback) {
   var req = new XMLHttpRequest();
@@ -42,19 +44,32 @@ function postMeals(callback) {
       var res = JSON.parse(req.response);
       callback(res);
     }
-  };
+  }
   req.send(JSON.stringify(text));
 }
 
 addButton.addEventListener('click', function() {
   postMeals(function() {
-    getMeals(listMeals);
-  })
-})
+    getMeals(url, listMeals);
+  });
+});
+
+filterButton.addEventListener('click', function() {
+  var newUrl = url + '/' + filterInput.value;
+  console.log(newUrl);
+  mealsContainer.innerHTML = '';
+  getMeals(newUrl, listMeals)
+});
+
 
 function deleteMeals(callback, id) {
   var req = new XMLHttpRequest();
   req.open('DELETE', url+'/'+id);
-
-
+  req.send()
+  req.onreadystatechange = function () {
+    if (req.readyState === 4) {
+      var res = JSON.parse(req.response);
+      callback(res);
+    }
+  }
 }

@@ -16,7 +16,14 @@ app.post("/meals", function (req, res) {
 });
 
 app.get("/meals", function (req, res) {
-  items.get(function(result) {
+    items.get(function(result) {
+      res.status(200).json(result)
+    })
+});
+
+app.get("/meals/:date", function (req, res) {
+  items.filterByDate(req.params.date, function(result) {
+    console.log(result);
     res.status(200).json(result)
   })
 });
