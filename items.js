@@ -29,8 +29,6 @@ function getItem(callback) {
 function filterItemsByDate(date, callback) {
   connection.query('SELECT * FROM meals WHERE date = ?', date, function(err, result) {
     if (err) throw err;
-    console.log(date);
-    console.log(result);
     callback(result);
   });
 }

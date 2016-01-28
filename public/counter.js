@@ -3,6 +3,7 @@
 var url = "http://localhost:3000/meals";
 var addButton = document.querySelector('.add-button');
 var filterButton = document.querySelector('.filter-button');
+var allButton = document.querySelector('.all-button');
 var mealInput = document.querySelector('.meal-input');
 var filterInput = document.querySelector('.filter-input');
 var calorieInput = document.querySelector('.calorie-input');
@@ -56,11 +57,14 @@ addButton.addEventListener('click', function() {
 
 filterButton.addEventListener('click', function() {
   var newUrl = url + '/' + filterInput.value;
-  console.log(newUrl);
   mealsContainer.innerHTML = '';
   getMeals(newUrl, listMeals)
 });
 
+
+allButton.addEventListener('click', function () {
+    getMeals(url, listMeals)
+})
 
 function deleteMeals(callback, id) {
   var req = new XMLHttpRequest();
