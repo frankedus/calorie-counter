@@ -9,6 +9,7 @@ var filterInput = document.querySelector('.filter-input');
 var calorieInput = document.querySelector('.calorie-input');
 var dateInput = document.querySelector('.date-input');
 var mealsContainer = document.querySelector('.main-container')
+var sumCalorie = document.querySelector('.sum-calories')
 
 
 function getMeals(url, callback) {
@@ -23,57 +24,80 @@ function getMeals(url, callback) {
   }
 }
 
+var sum = 0;
 function listMeals(response) {
   mealsContainer.innerHTML = ' ';
+  sum = 0;
   response.forEach(function(meal) {
+    sum += meal.calories;
     var meals = document.createElement('div');
-    meals.innerText = meal.name + ' ' + meal.calories + ' ' + meal.date;
+    meals.innerText = meal.name + ' ' + 'calories: ' + meal.calories + ' ' + meal.date.split('T')[0];
+    var button = document.createElement('button');
+    button.setAttribute('class', 'delete')
+    button.innerText = 'x';
     meals.setAttribute('id', meal.meal_id);
     mealsContainer.appendChild(meals);
+    meals.appendChild(button);
   });
+  sumCalorie.innerText = sum;
 }
 
-getMeals(url, listMeals);
+function refreshList () {
+  getMeals(url, listMeals)
+}
+
+// getMeals(url, listMeals);
+refreshList();
 
 function postMeals(callback) {
   var req = new XMLHttpRequest();
   req.open('POST', url);
   req.setRequestHeader('Content-Type', 'application/json');
   var text = ({"name": mealInput.value, "calories": calorieInput.value, "date": dateInput.value})
+  req.send(JSON.stringify(text));
   req.onreadystatechange = function () {
     if (req.readyState === 4) {
-      var res = JSON.parse(req.response);
-      callback(res);
+      var response = JSON.parse(req.response);
+      callback(response);
     }
   }
-  req.send(JSON.stringify(text));
+
 }
 
 addButton.addEventListener('click', function() {
   postMeals(function() {
-    getMeals(url, listMeals);
+    refreshList();
   });
 });
 
 filterButton.addEventListener('click', function() {
   var newUrl = url + '/' + filterInput.value;
   mealsContainer.innerHTML = '';
-  getMeals(newUrl, listMeals)
+  getMeals(newUrl, listMeals);
+  getMeals(newUrl, sumCalories)
 });
 
 
 allButton.addEventListener('click', function () {
-    getMeals(url, listMeals)
+    refreshList()
+    getMeals(newUrl, sumCalories)
 })
 
-function deleteMeals(callback, id) {
+function deleteMeals(id, callback) {
   var req = new XMLHttpRequest();
   req.open('DELETE', url+'/'+id);
-  req.send()
+  req.send();
   req.onreadystatechange = function () {
     if (req.readyState === 4) {
-      var res = JSON.parse(req.response);
-      callback(res);
+      var response = JSON.parse(req.response);
+      callback(response);
     }
   }
 }
+
+
+mealsContainer.addEventListener('click', function(e) {
+  var id = e.path[1].id;
+  console.log(id)
+  deleteMeals(id, refreshList);
+})
