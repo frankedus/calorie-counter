@@ -8,7 +8,7 @@ var mealInput = document.querySelector('.meal-input');
 var filterInput = document.querySelector('.filter-input');
 var calorieInput = document.querySelector('.calorie-input');
 var dateInput = document.querySelector('.date-input');
-var mealsContainer = document.querySelector('.main-container')
+var mealsContainer = document.querySelector('.meals-container')
 var sumCalorie = document.querySelector('.sum-calories')
 
 
@@ -31,22 +31,21 @@ function listMeals(response) {
   response.forEach(function(meal) {
     sum += meal.calories;
     var meals = document.createElement('div');
-    meals.innerText = meal.name + ' ' + 'calories: ' + meal.calories + ' ' + meal.date.split('T')[0];
+    meals.innerText = meal.name + ' ' + meal.calories + 'kcal' + ' ' + meal.date.split('T')[0];
     var button = document.createElement('button');
-    button.setAttribute('class', 'delete')
+    button.setAttribute('class', 'delete');
     button.innerText = 'x';
     meals.setAttribute('id', meal.meal_id);
     mealsContainer.appendChild(meals);
     meals.appendChild(button);
   });
-  sumCalorie.innerText = sum;
+  sumCalorie.innerText = 'Sum of the calories: ' + sum;
 }
 
 function refreshList () {
   getMeals(url, listMeals)
 }
 
-// getMeals(url, listMeals);
 refreshList();
 
 function postMeals(callback) {
@@ -61,7 +60,6 @@ function postMeals(callback) {
       callback(response);
     }
   }
-
 }
 
 addButton.addEventListener('click', function() {
@@ -94,7 +92,6 @@ function deleteMeals(id, callback) {
     }
   }
 }
-
 
 mealsContainer.addEventListener('click', function(e) {
   var id = e.path[1].id;

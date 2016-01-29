@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css"></link>
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,700' rel='stylesheet' type='text/css'>
     <meta charset="utf-8">
     <title></title>
   </head>
@@ -9,15 +10,37 @@
     <header>
       <h1>Calorie counter</h1>
     </header>
-    <input class="meal-input" placeholder="Add meal"></input>
-    <input class="calorie-input" placeholder="Add calorie"></input>
-    <input type="datetime-local" class="date-input"></input>
-    <button class="add-button">ADD</button>
-    <input type="date" class="filter-input"></input>
-    <button class="filter-button">FILTER</button>
-    <button class="all-button">ALL</button>
-    <div class="main-container"></div>
-    <div class="sum-calories"></div>
+    <div class="basic-container">
+      <div class="main-container">
+        <div class="inputs">
+          <div>
+            <input class="meal-input" placeholder="Add meal"></input>
+          </div>
+          <div>
+            <input class="calorie-input" placeholder="Add calorie"></input>
+          </div>
+          <div>
+            <input type="date" class="date-input"></input>
+          </div>
+          <div>
+            <button class="add-button">ADD</button>
+          </div>
+        </div>
+        <div class= "filter">
+          <div>
+            <input type="date" class="filter-input"></input>
+          </div>
+          <div>
+            <button class="filter-button">FILTER</button>
+            <button class="all-button">ALL</button>
+          </div>
+        </div>
+      </div>
+      <div class="list">
+        <div class="meals-container"></div>
+        <div class="sum-calories"></div>
+      </div>
+    </div>
     <script src="counter.js"></script>
   </body>
 </html>
