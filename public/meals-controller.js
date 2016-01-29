@@ -63,22 +63,19 @@ function postMeals(callback) {
 }
 
 addButton.addEventListener('click', function() {
-  postMeals(function() {
-    refreshList();
-  });
+  postMeals(refreshList);
 });
 
 filterButton.addEventListener('click', function() {
   var newUrl = url + '/' + filterInput.value;
   mealsContainer.innerHTML = '';
   getMeals(newUrl, listMeals);
-  getMeals(newUrl, sumCalories)
 });
 
 
 allButton.addEventListener('click', function () {
     refreshList()
-    getMeals(newUrl, sumCalories)
+    // getMeals(newUrl, sumCalories)
 })
 
 function deleteMeals(id, callback) {
@@ -87,14 +84,14 @@ function deleteMeals(id, callback) {
   req.send();
   req.onreadystatechange = function () {
     if (req.readyState === 4) {
+      console.log(req.response);
       var response = JSON.parse(req.response);
       callback(response);
     }
   }
 }
 
-mealsContainer.addEventListener('click', function(e) {
-  var id = e.path[1].id;
-  console.log(id)
+mealsContainer.addEventListener('click', function(event) {
+  var id = event.target.parentNode.id;
   deleteMeals(id, refreshList);
 })
